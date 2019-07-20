@@ -1,12 +1,16 @@
 __name__ = "__main__"
 
-from flask import (
-    Flask,
-    render_template
-)
+from flask import render_template
+
+import connexion
 
 # create app instance
-app = Flask(__name__, template_folder="templates")
+app = connexion.App(__name__, specification_dir='./')
+
+# read the swagger.yml file to config endpoints
+app.add_api('swagger.yml')
+# this is a YAML or JSON file that configures i/o validation
+# url endpoint definition, and Swagger UI
 
 # create URL route in app for "/"
 @app.route('/')
@@ -19,4 +23,4 @@ def home():
 
 # if in standalone mode, run app
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
